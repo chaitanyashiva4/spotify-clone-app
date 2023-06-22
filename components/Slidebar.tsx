@@ -7,6 +7,8 @@ import Box from "./Box";
 import SlidebarItem from "./SlidebarItem";
 import Library from "./Library";
 import { Song } from "@/types";
+import usePlayer from "@/hooks/usePlayer";
+import { twMerge } from "tailwind-merge";
 
 interface SlidebarProps {
     children: React.ReactNode;
@@ -15,6 +17,7 @@ interface SlidebarProps {
 
 const Slidebar: React.FC<SlidebarProps> = ({ children,songs }) => {
     const pathname = usePathname();
+    const player = usePlayer()
     const routes = useMemo(() => [
         {
             icon: HiHome,
@@ -31,7 +34,11 @@ const Slidebar: React.FC<SlidebarProps> = ({ children,songs }) => {
     ], [pathname]);
 
     return (
-        <div className="flex h-full p-2">
+        <div className={twMerge(`
+            flex h-full 
+            `, 
+            player.activeId && "h-[calc(100%-80px)]"
+        )}>
             <div className="hidden md:flex flex-col gap-y-2 bg-black h-full w-[300px]">
                 <Box>
                     <div className="flex flex-col gap-y-4 px-5 py-4">
